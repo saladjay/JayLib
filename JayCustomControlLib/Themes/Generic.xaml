@@ -1,0 +1,23 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:JayCustomControlLib">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/JSpinner.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/JLimitGDSlider.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/JMeter.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/JSlider.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/JSwitcher.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/DrawerHost.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/JTickMark.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/ListDisplayer.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/LedSlider.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/JLight.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+
+
+
+</ResourceDictionary>
