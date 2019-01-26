@@ -110,6 +110,18 @@ namespace JayCustomControlLib
         // Using a DependencyProperty as the backing store for BoxesWidth.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BoxesWidthProperty =
             DependencyProperty.Register("BoxesWidth", typeof(double), typeof(JMeter), new PropertyMetadata(5d));
+        
+        
+        public VerticalAlignment ActiveRectangleVerticalAlignment
+        {
+            get { return (VerticalAlignment)GetValue(ActiveRectangleVerticalAlignmentProperty); }
+            set { SetValue(ActiveRectangleVerticalAlignmentProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ActiveRectangleVerticalAlignment.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ActiveRectangleVerticalAlignmentProperty =
+            DependencyProperty.Register("ActiveRectangleVerticalAlignment", typeof(VerticalAlignment), typeof(JMeter), new FrameworkPropertyMetadata(VerticalAlignment.Bottom,FrameworkPropertyMetadataOptions.AffectsRender));
+
 
 
         public bool IsDockRight
@@ -186,7 +198,7 @@ namespace JayCustomControlLib
 
         // Using a DependencyProperty as the backing store for ActiveBrush.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ActiveBrushProperty =
-            DependencyProperty.Register("ActiveBrush", typeof(Brush), typeof(JMeter), new FrameworkPropertyMetadata(Brushes.LightGreen, FrameworkPropertyMetadataOptions.AffectsRender));
+            DependencyProperty.Register("ActiveBrush", typeof(Brush), typeof(JMeter), new FrameworkPropertyMetadata(Brushes.LimeGreen, FrameworkPropertyMetadataOptions.AffectsRender));
 
 
 

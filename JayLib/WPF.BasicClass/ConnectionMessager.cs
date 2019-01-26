@@ -224,7 +224,15 @@ namespace JayLib.WPF.BasicClass
                 {
                     if (isbroadMatch)
                     {
-                        _broadMap.Add(message, new WeakAction(target, method, actionType));
+                        if (!_broadMatchMap.ContainsKey(message))
+                        {
+                            _broadMatchMap[message] = new List<WeakAction>
+                            {
+                                new WeakAction(target, method, actionType)
+                            };
+                        }
+                        else
+                            _broadMatchMap[message].Add(new WeakAction(target, method, actionType));
                         foreach (string key in _map.Keys)
                         {
                             if (Regex.IsMatch(key, message))
@@ -241,11 +249,11 @@ namespace JayLib.WPF.BasicClass
                             {
                                 new WeakAction(target, method, actionType)
                             };
-                            foreach (string mes in _broadMap.Keys)
+                            foreach (string mes in _broadMatchMap.Keys)
                             {
                                 if (Regex.IsMatch(message, mes))
                                 {
-                                    _map[message].Add(_broadMap[mes]);
+                                    _map[message].AddRange(_broadMatchMap[mes]);
                                 }
                             }
                         }
@@ -343,7 +351,7 @@ namespace JayLib.WPF.BasicClass
 
             #region Fields
 
-            readonly Dictionary<string, WeakAction> _broadMap = new Dictionary<string, WeakAction>();
+            readonly Dictionary<string, List<WeakAction>> _broadMatchMap = new Dictionary<string, List<WeakAction>>();
             // Stores a hash where the key is the message and the value is the list of callbacks to invoke.
             readonly Dictionary<string, List<WeakAction>> _map = new Dictionary<string, List<WeakAction>>();
 

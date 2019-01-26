@@ -97,14 +97,14 @@
                             <DockPanel>
                                 <TextBlock Visibility="Collapsed" Name="leftTB" DockPanel.Dock="Top">L</TextBlock>
                                 <Grid Background="{TemplateBinding InactiveBrush}" MinWidth="{TemplateBinding BoxesWidth}">
-                                    <Rectangle Name="PART_ActiveRect" Fill="{TemplateBinding ActiveBrush}" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"></Rectangle>
+                                    <Rectangle Name="PART_ActiveRect" Fill="{TemplateBinding ActiveBrush}" VerticalAlignment="{TemplateBinding ActiveRectangleVerticalAlignment}" HorizontalAlignment="Stretch"></Rectangle>
                                     <local:ListDisplayer BorderThickness="{TemplateBinding Thickness}" Style="{StaticResource d1}" BorderBrush="{TemplateBinding BorderRimBrush}" ItemsSource="{TemplateBinding TextCollection}" Background="Transparent" Height="{TemplateBinding Height}"></local:ListDisplayer>
                                 </Grid>
                             </DockPanel>
                             <DockPanel Visibility="Collapsed" Name="rightMeter">
                                 <TextBlock DockPanel.Dock="Top">R</TextBlock>
                                 <Grid Background="{TemplateBinding InactiveBrush}" MinWidth="{TemplateBinding BoxesWidth}">
-                                    <Rectangle Name="PART_RightActiveRect" Fill="{TemplateBinding ActiveBrush}" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"></Rectangle>
+                                    <Rectangle Name="PART_RightActiveRect" Fill="{TemplateBinding ActiveBrush}" VerticalAlignment="{TemplateBinding ActiveRectangleVerticalAlignment}" HorizontalAlignment="Stretch"></Rectangle>
                                     <local:ListDisplayer BorderThickness="{TemplateBinding Thickness}" Style="{StaticResource d1}" BorderBrush="{TemplateBinding BorderRimBrush}" ItemsSource="{TemplateBinding TextCollection}" Background="Transparent" Height="{TemplateBinding Height}"></local:ListDisplayer>
                                 </Grid>
                             </DockPanel>

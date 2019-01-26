@@ -25,8 +25,12 @@
     </Window.Resources>
     <MyCustomControl:DrawerHost  Background="White">
         <UniformGrid Rows="1">
-            <MyCustomControl:JSpinner Name="bbb" CanEdit="True" SpinnerType="Range" Maximum="100" Minimum="10" Suffix="dB"></MyCustomControl:JSpinner>
-            <ComboBox Name="ttt"></ComboBox>
+            <MyCustomControl:JColorPicker></MyCustomControl:JColorPicker>
+            <TextBlock Text="{Binding ElementName=bbb,Path=Text}"></TextBlock>
+            <MyCustomControl:JSpinner Name="bbb" CanEdit="True" SpinnerType="ItemSource"></MyCustomControl:JSpinner>
+            <MyCustomControl:JSlider IsUIFireEventDirectly="True" Orientation="Vertical" HorizontalAlignment="Center" Maximum="100" Name="ttt"></MyCustomControl:JSlider>
+            <MyCustomControl:JSwitcher GroupName="aaa"></MyCustomControl:JSwitcher>
+            <MyCustomControl:JSwitcher GroupName="aaa"></MyCustomControl:JSwitcher>
         </UniformGrid>
     </MyCustomControl:DrawerHost>
 

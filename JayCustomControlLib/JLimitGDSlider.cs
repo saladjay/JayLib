@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -497,7 +498,7 @@ namespace JayCustomControlLib
             res = 0;
             if (ratioStrings.Length == 2)
             {
-                if (double.TryParse(ratioStrings[0], out double dividend) && double.TryParse(ratioStrings[1], out double divisor))
+                if (double.TryParse(ratioStrings[0], System.Globalization.NumberStyles.Float,CultureInfo.InvariantCulture, out double dividend) && double.TryParse(ratioStrings[1], System.Globalization.NumberStyles.Float, CultureInfo.InvariantCulture, out double divisor))
                 {
                     res = dividend / divisor;
                     return true;

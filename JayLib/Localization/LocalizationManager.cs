@@ -1,15 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace JayLib.Localization
 {
-    public abstract class LocalizationManager
+    public sealed class LocalizationManager
     {
+        #region Event
+
+        public delegate void LanguageChangedEventHandler(string lanugage);
+
+        public static event LanguageChangedEventHandler LanguageChangedEvent;
+
+        #endregion Event
+
         private static string _Language;
+
         public static string Language
         {
             get { return _Language; }
@@ -17,10 +23,11 @@ namespace JayLib.Localization
             {
                 _Language = value;
                 UpdateLanguage();
+                LanguageChangedEvent?.Invoke(Language);
             }
         }
 
-        static List<ResourceDictionary> dictionaryList = new List<ResourceDictionary>();
+        private static readonly List<ResourceDictionary> dictionaryList = new List<ResourceDictionary>();
 
         static LocalizationManager()
         {
@@ -36,11 +43,11 @@ namespace JayLib.Localization
         private static void UpdateLanguage()
         {
             string requestedLanguage = string.Format(@"Language\StringResource.{0}.xaml", Language);
-            ResourceDictionary resourceDictionary = dictionaryList.FirstOrDefault(d => d.Source.OriginalString.Equals(requestedLanguage));
+            ResourceDictionary resourceDictionary = dictionaryList.Find(d => d.Source.OriginalString.Equals(requestedLanguage));
             if (resourceDictionary == null)
             {
                 requestedLanguage = @"Language\StringResource.en-US.xaml";
-                resourceDictionary = dictionaryList.FirstOrDefault(d => d.Source.OriginalString.Equals(requestedLanguage));
+                resourceDictionary = dictionaryList.Find(d => d.Source.OriginalString.Equals(requestedLanguage));
             }
             if (resourceDictionary != null)
             {
@@ -48,8 +55,6 @@ namespace JayLib.Localization
                 Application.Current.Resources.MergedDictionaries.Add(resourceDictionary);
             }
         }
-
-
 
         public static string GetString(string key)
         {
@@ -65,9 +70,8 @@ namespace JayLib.Localization
 
         public static string GetString(string key, string language)
         {
-
             string requestedLanguage = string.Format(@"Language\StringResource.{0}.xaml", language);
-            ResourceDictionary resourceDictionary = dictionaryList.FirstOrDefault(d => d.Source.OriginalString.Equals(requestedLanguage));
+            ResourceDictionary resourceDictionary = dictionaryList.Find(d => d.Source.OriginalString.Equals(requestedLanguage));
             if (resourceDictionary == null)
             {
                 return null;
@@ -81,7 +85,7 @@ namespace JayLib.Localization
         public static bool ChangeString(string key, string value, string language)
         {
             string requestedLanguage = string.Format(@"Language\StringResource.{0}.xaml", language);
-            ResourceDictionary resourceDictionary = dictionaryList.FirstOrDefault(d => d.Source.OriginalString.Equals(requestedLanguage));
+            ResourceDictionary resourceDictionary = dictionaryList.Find(d => d.Source.OriginalString.Equals(requestedLanguage));
             if (resourceDictionary == null)
             {
                 return false;

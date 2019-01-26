@@ -73,7 +73,7 @@ namespace JayCustomControlLib
             ChangeContentCommand = new RoutedCommand("ChangeContentCommand", typeof(JSwitcher));
             DoubleClickCommand = new RoutedCommand("DoubleClickCommand", typeof(JSwitcher));
             //ClickCommand = new RoutedCommand("ClickCommand", typeof(JSwitcher));
-            MyCommandHelper.RegisterCommandHandler(typeof(JSwitcher), ChangeContentCommand, new ExecutedRoutedEventHandler(ChangeContentExecute), new KeyGesture(Key.Enter));
+            MyCommandHelper.RegisterCommandHandler(typeof(JSwitcher), ChangeContentCommand, new ExecutedRoutedEventHandler(ChangeContentExecute), new KeyGesture(Key.Return));
             MyCommandHelper.RegisterCommandHandler(typeof(JSwitcher), DoubleClickCommand, new ExecutedRoutedEventHandler(DoubleClickExecute), new MouseGesture(MouseAction.LeftDoubleClick));
             //MyCommandHelper.RegisterCommandHandler(typeof(JSwitcher), ClickCommand, new ExecutedRoutedEventHandler(ClickExecute), new CanExecuteRoutedEventHandler(CanClickExecute), new MouseGesture(MouseAction.LeftClick));
         }
@@ -122,8 +122,6 @@ namespace JayCustomControlLib
         #region Event
         public delegate void ContentChangedEventDelegate(object sender, string content);
         public event ContentChangedEventDelegate ContentChangedEvent;
-
-
         #endregion
 
         #region Propertys
@@ -274,8 +272,7 @@ namespace JayCustomControlLib
             }
         }
         #endregion
-
-
+        
         #endregion
 
         #region Static Propertys
@@ -307,7 +304,7 @@ namespace JayCustomControlLib
 
         protected override void OnToggle()
         {
-            if (IsEditing||(!string.IsNullOrWhiteSpace(GroupName)&&IsChecked==true))
+            if (IsEditing || (!string.IsNullOrWhiteSpace(GroupName) && IsChecked == true))
             {
                 return;
             }

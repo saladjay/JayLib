@@ -15,9 +15,9 @@
         <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/ListDisplayer.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/LedSlider.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/JLight.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/JProgressRing.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/JColorPicker.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-
-
 
 
 </ResourceDictionary>

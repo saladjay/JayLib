@@ -98,6 +98,7 @@ namespace JayCustomControlLib
 
             // Listen to MouseLeftButtonDown event to determine if slide should move focus to itself
             EventManager.RegisterClassHandler(typeof(JSlider), Mouse.MouseDownEvent, new MouseButtonEventHandler(JSlider._OnMouseLeftButtonDown), true);
+            EventManager.RegisterClassHandler(typeof(JSlider), Mouse.MouseUpEvent, new MouseButtonEventHandler(JSlider._OnMouseLeftButtonUp), true);
 
             DefaultStyleKeyProperty.OverrideMetadata(typeof(JSlider), new FrameworkPropertyMetadata(typeof(JSlider)));
         }
@@ -434,7 +435,6 @@ namespace JayCustomControlLib
         }
 
         #endregion
-
 
         /*
          * TickMark support
@@ -887,11 +887,50 @@ namespace JayCustomControlLib
         // Using a DependencyProperty as the backing store for IsUIFireEventDirectly.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsUIFireEventDirectlySliderProperty =
             DependencyProperty.Register("IsUIFireEventDirectly", typeof(bool), typeof(JSlider),new PropertyMetadata(false));
+
+
+
+        public double SendValue
+        {
+            get { return (double)GetValue(SendValueProperty); }
+            set { SetValue(SendValueProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SendValue.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SendValueProperty =
+            DependencyProperty.Register("SendValue", typeof(double), typeof(JSlider), new PropertyMetadata(0d));
+
+
+
+
+        public ICommand SendValueChangedCommand
+        {
+            get { return (ICommand)GetValue(SendValueChangedCommandProperty); }
+            set { SetValue(SendValueChangedCommandProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SendValueChangedCommand.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SendValueChangedCommandProperty =
+            DependencyProperty.Register("SendValueChangedCommand", typeof(ICommand), typeof(JSlider), new PropertyMetadata(null));
+
+
+
+        public object SendValueChangedCommandParameter
+        {
+            get { return (object)GetValue(SendValueChangedCommandParameterProperty); }
+            set { SetValue(SendValueChangedCommandParameterProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SendValueChangedCommandParameter.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SendValueChangedCommandParameterProperty =
+            DependencyProperty.Register("SendValueChangedCommandParameter", typeof(object), typeof(JSlider), new PropertyMetadata(null));
+
+
+
         #endregion
 
-
         #endregion // Properties
-        
+
         #region Event Handlers
         /// <summary>
         /// Listen to Thumb DragStarted event.
@@ -1294,9 +1333,12 @@ namespace JayCustomControlLib
         }
         #endregion
 
+        #region Events
+        public delegate void SendValueChangedEventHandle(double value);
+        public event SendValueChangedEventHandle SendValueChanged;
+        #endregion
+
         #region Override Functions
-
-
 
         /// <summary>
         /// This is a class handler for MouseLeftButtonDown event.
@@ -1310,13 +1352,21 @@ namespace JayCustomControlLib
             if (e.ChangedButton != MouseButton.Left) return;
 
             JSlider JSlider = (JSlider)sender;
-
+            JSlider._IsMouseStartDrag = true;
             // When someone click on the JSlider's part, and it's not focusable
             // JSlider need to take the focus in order to process keyboard correctly
             if (!JSlider.IsKeyboardFocusWithin)
             {
                 e.Handled = JSlider.Focus() || e.Handled;
             }
+        }
+
+        private static void _OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left) return;
+
+            JSlider JSlider = (JSlider)sender;
+            JSlider._IsMouseStartDrag = false;
         }
 
         /// <summary>
@@ -1339,9 +1389,14 @@ namespace JayCustomControlLib
         /// <param name="newValue"></param>
         protected override void OnValueChanged(double oldValue, double newValue)
         {
-            if (IsUIFireEventDirectly)
+            if (IsUIFireEventDirectly&& _IsMouseStartDrag)
             {
-
+                SendValue = Math.Max(Minimum, Math.Min(Maximum, newValue));
+                SendValueChanged?.Invoke(SendValue);
+                if (SendValueChangedCommand!=null)
+                {
+                    SendValueChangedCommand.Execute(SendValueChangedCommandParameter);
+                }
             }
             else
             {
@@ -1457,7 +1512,6 @@ namespace JayCustomControlLib
             return !(DoubleUtil.IsNaN(d) || double.IsInfinity(d));
         }
 
-
         #endregion Helper Functions
         
         #region Private Fields
@@ -1475,6 +1529,7 @@ namespace JayCustomControlLib
         private bool _IsDragging;
         //
         private double _OldSnappedValue = 0d;
+        private bool _IsMouseStartDrag;
         #endregion Private Fields
     }
 }

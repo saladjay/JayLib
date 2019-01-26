@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("JayCustomControlLib")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("JAY")]
 [assembly: AssemblyProduct("JayCustomControlLib")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2018")]
 [assembly: AssemblyTrademark("")]

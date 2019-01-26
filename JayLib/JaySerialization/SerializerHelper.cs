@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace JayLib.JaySerialization
 {
@@ -25,24 +27,51 @@ namespace JayLib.JaySerialization
             return _Object.GetType().GetFields();
         }
 
-        public static void SerializationPropertyHelper(SerializationInfo info, object _Object)
+        public static void SerializationPropertyHelper(SerializationInfo info, object _Object, params Type[] notSerializeTypes)
         {
-            foreach (PropertyInfo property in GetProperties(_Object))
+            if (notSerializeTypes == null)
             {
-                if (property.CanWrite && property.CanRead)
+                foreach (PropertyInfo property in GetProperties(_Object))
                 {
-                    info.AddValue(property.Name, property.GetValue(_Object));
+                    if (property.CanWrite && property.CanRead && property.PropertyType is ISerializable)
+                    {
+                        info.AddValue(property.Name, property.GetValue(_Object));
+                    }
+                }
+            }
+            else
+            {
+                foreach (PropertyInfo property in GetProperties(_Object))
+                {
+                    if (property.CanWrite && property.CanRead && property.PropertyType is ISerializable && !notSerializeTypes.Contains(property.PropertyType))
+                    {
+                        info.AddValue(property.Name, property.GetValue(_Object));
+                    }
                 }
             }
         }
 
-        public static void DeserializtionPropertyHelper(SerializationInfo info, object _Object)
+        public static void DeserializtionPropertyHelper(SerializationInfo info, object _Object, params Type[] notSerializeTypes)
         {
-            foreach (PropertyInfo property in GetProperties(_Object))
+            if (notSerializeTypes == null)
             {
-                if (property.CanWrite && property.CanRead)
+                foreach (PropertyInfo property in GetProperties(_Object))
                 {
-                    property.SetValue(_Object, info.GetValue(property.Name, property.PropertyType));
+                    if (property.CanWrite && property.CanRead && property.PropertyType is ISerializable)
+                    {
+                        property.SetValue(_Object, info.GetValue(property.Name, property.PropertyType));
+                    }
+                }
+            }
+            else
+            {
+
+                foreach (PropertyInfo property in GetProperties(_Object))
+                {
+                    if (property.CanWrite && property.CanRead && property.PropertyType is ISerializable && !notSerializeTypes.Contains(property.PropertyType))
+                    {
+                        property.SetValue(_Object, info.GetValue(property.Name, property.PropertyType));
+                    }
                 }
             }
         }

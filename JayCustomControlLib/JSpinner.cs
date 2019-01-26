@@ -1,4 +1,5 @@
-﻿using JayLib.JayString;
+﻿using JayCustomControlLib.CommonBasicClass;
+using JayLib.JayString;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -95,17 +96,24 @@ namespace JayCustomControlLib
 
         private static void CanIncrease(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (sender is JSpinner spinner && !spinner.IsEditing )
+            if (sender is JSpinner spinner && !spinner.IsEditing)
             {
-                if (spinner.SpinnerType == SpinnerType.ItemSource && spinner._TextList != null && spinner.Value < spinner._TextList.Count - 1)
+                switch (spinner.SpinnerType)
                 {
-                    e.CanExecute = true;
-                    return;
-                }
-                else if (spinner.SpinnerType == SpinnerType.Range &&  spinner.Value < spinner.Maximum)
-                {
-                    e.CanExecute = true;
-                    return;
+                    case SpinnerType.ItemSource:
+                        if (spinner._TextList != null && spinner.Value < spinner._TextList.Count - 1)
+                            e.CanExecute = true;
+                        return;
+                    case SpinnerType.ItemSources:
+                        if (spinner._TextList != null && spinner.Value < spinner._TextList.Count - 1)
+                            e.CanExecute = true;
+                        return;
+                    case SpinnerType.Range:
+                        if (spinner.Value < spinner.Maximum)
+                            e.CanExecute = true;
+                        return;
+                    default:
+                        break;
                 }
             }
             e.CanExecute = false;
@@ -115,15 +123,22 @@ namespace JayCustomControlLib
         {
             if (sender is JSpinner spinner && !spinner.IsEditing)
             {
-                if (spinner.SpinnerType == SpinnerType.ItemSource && spinner._TextList != null && spinner.Value > 0)
+                switch (spinner.SpinnerType)
                 {
-                    e.CanExecute = true;
-                    return;
-                }
-                else if (spinner.SpinnerType == SpinnerType.Range && spinner.Value > spinner.Minimum)
-                {
-                    e.CanExecute = true;
-                    return;
+                    case SpinnerType.ItemSource:
+                        if (spinner._TextList != null && spinner.Value > 0)
+                            e.CanExecute = true;
+                        return;
+                    case SpinnerType.ItemSources:
+                        if (spinner._TextList != null && spinner.Value > 0)
+                            e.CanExecute = true;
+                        return;
+                    case SpinnerType.Range:
+                        if (spinner.SpinnerType == SpinnerType.Range && spinner.Value > spinner.Minimum)
+                            e.CanExecute = true;
+                        return;
+                    default:
+                        break;
                 }
             }
             e.CanExecute = false;
@@ -161,7 +176,8 @@ namespace JayCustomControlLib
         {
             if (sender is JSpinner spinner && 
                 (spinner.SpinnerType == SpinnerType.ItemSource && spinner.Value <= spinner._TextList.Count - 1 && spinner.Value > 0 
-                || spinner.SpinnerType == SpinnerType.Range && spinner.Value <= spinner.Maximum && spinner.Value > spinner.Minimum))
+                || spinner.SpinnerType == SpinnerType.Range && spinner.Value <= spinner.Maximum && spinner.Value > spinner.Minimum
+                ||spinner.SpinnerType== SpinnerType.ItemSources&& spinner.Value <= spinner._TextList.Count - 1 && spinner.Value > 0))
             {
                 spinner._ClickFireEvent = true;
                 if (!spinner.IsUIFireEventDirectly)
@@ -170,7 +186,12 @@ namespace JayCustomControlLib
                 }
                 else
                 {
-                    spinner.ValueChangedEvent?.Invoke(spinner, spinner.Value - 1);
+                    spinner.SendValue = spinner.Value - 1;
+                    spinner.ValueChangedEvent?.Invoke(spinner, spinner.SendValue);
+                }
+                if (spinner.CommonCommand != null)
+                {
+                    MyCommandHelper.ExecuteCommand(spinner.CommonCommand, spinner.CommonCommandParameter, spinner);
                 }
             }
         }
@@ -179,7 +200,8 @@ namespace JayCustomControlLib
         {
             if (sender is JSpinner spinner && 
                 (spinner.SpinnerType == SpinnerType.ItemSource && spinner.Value < spinner._TextList.Count - 1 && spinner.Value >= 0 
-                || spinner.SpinnerType == SpinnerType.Range && spinner.Value >= spinner.Minimum && spinner.Value < spinner.Maximum))
+                || spinner.SpinnerType == SpinnerType.Range && spinner.Value >= spinner.Minimum && spinner.Value < spinner.Maximum
+                ||spinner.SpinnerType== SpinnerType.ItemSources && spinner.Value < spinner._TextList.Count - 1 && spinner.Value >= 0))
             {
                 spinner._ClickFireEvent = true;
                 if (!spinner.IsUIFireEventDirectly)
@@ -188,7 +210,12 @@ namespace JayCustomControlLib
                 }
                 else
                 {
-                    spinner.ValueChangedEvent?.Invoke(spinner, spinner.Value + 1);
+                    spinner.SendValue = spinner.Value + 1;
+                    spinner.ValueChangedEvent?.Invoke(spinner, spinner.SendValue);
+                }
+                if (spinner.CommonCommand != null)
+                {
+                    MyCommandHelper.ExecuteCommand(spinner.CommonCommand, spinner.CommonCommandParameter, spinner);
                 }
             }
         }
@@ -201,12 +228,12 @@ namespace JayCustomControlLib
 
         #region DependencyPropertys
         /*
-         * TickMark support
+         * Connection support
          *
          *   - bool      IsUIFireEventDirectly
          */
         #region Connection support
-            
+
         public bool IsUIFireEventDirectly
         {
             get { return (bool)GetValue(IsUIFireEventDirectlyProperty); }
@@ -216,6 +243,20 @@ namespace JayCustomControlLib
         // Using a DependencyProperty as the backing store for IsUIFireEventDirectly.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsUIFireEventDirectlyProperty =
             DependencyProperty.Register("IsUIFireEventDirectly", typeof(bool), typeof(JSpinner), new PropertyMetadata(false));
+
+
+
+        public int SendValue
+        {
+            get { return (int)GetValue(SendValueProperty); }
+            set { SetValue(SendValueProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SendValue.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SendValueProperty =
+            DependencyProperty.Register("SendValue", typeof(int), typeof(JSpinner), new PropertyMetadata(0));
+
+
         #endregion
         /*
          * Edit support
@@ -285,6 +326,7 @@ namespace JayCustomControlLib
          *   - string       Text
          */
         #region Value and Text
+
         public int Value
         {
             get { return (int)GetValue(ValueProperty); }
@@ -313,6 +355,14 @@ namespace JayCustomControlLib
                             break;
                         case SpinnerType.Range:
                             newValue = Math.Max(spinner.Minimum, Math.Min(newValue, spinner.Maximum));
+                            break;
+                        case SpinnerType.ItemSources:
+                            if (spinner._ItemsSourcesDict.Count==0)
+                            {
+                                newValue = 0;
+                                break;
+                            }
+                            newValue = Math.Max(0, Math.Min(newValue, spinner._ItemsSourcesDict[spinner.ItemsSourceIndex].Count - 1));
                             break;
                         default:
                             break;
@@ -345,10 +395,18 @@ namespace JayCustomControlLib
                     switch (spinner.SpinnerType)
                     {
                         case SpinnerType.ItemSource:
-                            spinner.Text = spinner._TextList[newValue].ToString();
+                            spinner.Text = spinner._TextList[newValue];
                             break;
                         case SpinnerType.Range:
                             spinner.Text = newValue.ToString().Append(spinner.Suffix);
+                            break;
+                        case SpinnerType.ItemSources:
+                            if (spinner._ItemsSourcesDict.Count == 0)
+                            {
+                                break;
+                            }
+                            spinner.Text = spinner._ItemsSourcesDict[spinner.ItemsSourceIndex][newValue];
+                            spinner._ItemsSourcesValueDict[spinner.ItemsSourceIndex] = newValue;
                             break;
                         default:
                             break;
@@ -390,7 +448,7 @@ namespace JayCustomControlLib
          *   - int           Minimum
          *   - string        Suffix
          */
-        #region ContentCollection
+        #region Content Collection
 
         public IEnumerable ItemsSource
         {
@@ -418,6 +476,67 @@ namespace JayCustomControlLib
                     spinner._TextList.Add(item.ToString());
                 }
                 spinner.GetNewCollection();
+            }
+        }
+
+
+
+        public IEnumerable ItemsSources
+        {
+            get { return (IEnumerable)GetValue(ItemsSourcesProperty); }
+            set { SetValue(ItemsSourcesProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ItemsSources.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ItemsSourcesProperty =
+            DependencyProperty.Register("ItemsSources", typeof(IEnumerable), typeof(JSpinner), new PropertyMetadata(null,OnItemsSourcesChanged));
+
+        private static void OnItemsSourcesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            JSpinner spinner = d as JSpinner;
+            if (spinner.ItemsSources != null)
+            {
+                foreach (var itemSource in spinner.ItemsSources)
+                {
+                    if (itemSource is IEnumerable<string> newCollection&&newCollection!=null)
+                    {
+                        spinner._ItemsSourcesDict[spinner._ItemsSourcesDict.Count] = newCollection.ToList();
+                        spinner._ItemsSourcesValueDict[spinner._ItemsSourcesValueDict.Count] = 0;
+                    }
+                    else if (itemSource is IEnumerable enumerable &&enumerable!=null)
+                    {
+                        List<string> strs = new List<string>();
+                        foreach (var item in enumerable)
+                        {
+                            strs.Add(item.ToString());
+                        }
+                        spinner._ItemsSourcesDict[spinner._ItemsSourcesDict.Count] = strs;
+                        spinner._ItemsSourcesValueDict[spinner._ItemsSourcesValueDict.Count] = 0;
+                    }
+                }
+            }
+        }
+
+
+
+        public int ItemsSourceIndex
+        {
+            get { return (int)GetValue(ItemsSourceIndexProperty); }
+            set { SetValue(ItemsSourceIndexProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ItemsSourceIndex.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ItemsSourceIndexProperty =
+            DependencyProperty.Register("ItemsSourceIndex", typeof(int), typeof(JSpinner), new PropertyMetadata(0,OnItemsSourcesIndexChanged));
+
+        private static void OnItemsSourcesIndexChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            JSpinner spinner = d as JSpinner;
+            int newValue = (int)e.NewValue;
+            if (newValue>=0&&newValue<spinner._ItemsSourcesDict.Count)
+            {
+                spinner.ItemsSource = spinner._ItemsSourcesDict[newValue];
+                spinner.Value = spinner._ItemsSourcesValueDict[newValue];
             }
         }
 
@@ -513,10 +632,46 @@ namespace JayCustomControlLib
 
 
         #endregion
+
+        /*
+         * 
+         * 
+         * 
+         */
+        #region Button Command
+
+
+        public ICommand CommonCommand
+        {
+            get { return (ICommand)GetValue(CommonCommandProperty); }
+            set { SetValue(CommonCommandProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CommonCommand.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CommonCommandProperty =
+            DependencyProperty.Register("CommonCommand", typeof(ICommand), typeof(JSpinner), new PropertyMetadata(null));
+
+
+
+        public object CommonCommandParameter        
+        {
+            get { return (object)GetValue(CommonCommandParameterProperty); }
+            set { SetValue(CommonCommandParameterProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CommonCommandParameter.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CommonCommandParameterProperty =
+            DependencyProperty.Register("CommonCommandParameter", typeof(object), typeof(JSpinner), new PropertyMetadata(default(object)));
+
+        
+        #endregion
+
         #endregion
 
         #region Private fields
         private List<string> _TextList = new List<string>() { ""};
+        private Dictionary<int, List<string>> _ItemsSourcesDict = new Dictionary<int, List<string>>();
+        private Dictionary<int, int> _ItemsSourcesValueDict = new Dictionary<int, int>();
         private bool _ClickFireEvent = false;
         private TextBox _TextBox = null;
         private const string TextBoxName = "PART_TextBox";
@@ -525,10 +680,20 @@ namespace JayCustomControlLib
         #region Private methods
         private void GetNewCollection()
         {
-            if (SpinnerType == SpinnerType.ItemSource)
+            switch (SpinnerType)
             {
-                Value = 0;
-                Text = _TextList.First();
+                case SpinnerType.ItemSource:
+                    Value = 0;
+                    Text = _TextList.First();
+                    break;
+                case SpinnerType.ItemSources:
+                    Value = _ItemsSourcesValueDict[ItemsSourceIndex];
+                    Text = _TextList[Value];
+                    break;
+                case SpinnerType.Range:
+                    break;
+                default:
+                    break;
             }
         }
         #endregion
@@ -545,6 +710,7 @@ namespace JayCustomControlLib
     public enum SpinnerType
     {
         ItemSource,
+        ItemSources,
         Range,
     }
 }

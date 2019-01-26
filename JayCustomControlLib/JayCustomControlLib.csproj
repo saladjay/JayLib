@@ -12,6 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -59,6 +60,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\JColorPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\JLight.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -68,6 +73,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\JMeter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\JProgressRing.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -116,9 +125,11 @@
     <Compile Include="Converter\ShadowConverter.cs" />
     <Compile Include="Converter\StringToVisibilityConverter.cs" />
     <Compile Include="DrawerHost.cs" />
+    <Compile Include="JColorPicker.cs" />
     <Compile Include="JLight.cs" />
     <Compile Include="JLimitGDSlider.cs" />
     <Compile Include="JMeter.cs" />
+    <Compile Include="JProgressRing.cs" />
     <Compile Include="JSlider.cs" />
     <Compile Include="JSpinner.cs" />
     <Compile Include="JSwitcher.cs" />
