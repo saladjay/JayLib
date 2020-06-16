@@ -7,6 +7,9 @@
         xmlns:local="clr-namespace:DRJ"
         mc:Ignorable="d"
         Title="MainWindow">
+    <Window.DataContext>
+        <local:MainWindowViewModel></local:MainWindowViewModel>
+    </Window.DataContext>
     <DockPanel>
         <Grid DockPanel.Dock="Top" MinHeight="20"></Grid>
         <Grid DockPanel.Dock="Top" MinHeight="60"></Grid>
@@ -20,7 +23,34 @@
                 <Button Grid.Row="1"></Button>
             </Grid>
             <Grid>
-                <Button></Button>
+                <Button Style="{StaticResource MaterialDesignFloatingActionLightButton}" Margin="8 0 0 0"
+                    Command="{Binding SaveCommand}"
+                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsSaving}"
+                    materialDesign:ButtonProgressAssist.Value="{Binding SaveProgress}">
+
+                    <!-- simple example of toggling/animating pack icon with a data trigger-->
+                    <materialDesign:PackIcon Height="24" Width="24">
+                        <materialDesign:PackIcon.Style>
+                            <Style TargetType="materialDesign:PackIcon" >
+                                <Setter Property="Kind" Value="CloudSync" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSaveComplete}" Value="True">
+                                        <Setter Property="Kind" Value="Check" />
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.8" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </materialDesign:PackIcon.Style>
+                    </materialDesign:PackIcon>
+
+                </Button>
+
             </Grid>
         </DockPanel>
     </DockPanel>

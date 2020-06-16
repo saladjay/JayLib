@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -54,11 +56,15 @@
     <Compile Include="JaySerialization\SerializerHelper.cs" />
     <Compile Include="JayString\StringHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WPF.BasicClass\Commands\AsyncCommand.cs" />
+    <Compile Include="WPF.BasicClass\Commands\CommandUtils.cs" />
+    <Compile Include="WPF.BasicClass\Commands\IAsyncCommand.cs" />
     <Compile Include="WPF.BasicClass\ConnectionMessager.cs" />
     <Compile Include="WPF.BasicClass\DelegateCommand.cs" />
     <Compile Include="WPF.BasicClass\Messeager.cs" />
     <Compile Include="WPF.BasicClass\NotificationObject.cs" />
-    <Compile Include="WPF.BasicClass\RelayCommand.cs" />
+    <Compile Include="WPF.BasicClass\Commands\RelayCommand.cs" />
+    <Compile Include="WPF.BasicClass\WeakEventManager.cs" />
     <Compile Include="WPF.BasicClass\WindowHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
