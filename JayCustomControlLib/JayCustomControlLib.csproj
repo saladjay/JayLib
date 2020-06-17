@@ -154,6 +154,7 @@
     </Compile>
     <Compile Include="TabPanelListBox.cs" />
     <Compile Include="TabPanelListBoxItem.cs" />
+    <Compile Include="HierarchicalPanel.cs" />
     <Compile Include="UniformPanel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
