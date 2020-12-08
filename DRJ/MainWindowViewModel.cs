@@ -48,18 +48,13 @@ namespace DRJ
 
         private void SaveExecute()
         {
-            if (IsSaveComplete == true)
-            {
-                IsSaveComplete = false;
-                return;
-            }
 
             if (SaveProgress != 0) return;
 
             var started = DateTime.Now;
             IsSaving = true;
 
-            new DispatcherTimer(
+            var timer = new DispatcherTimer(
                 TimeSpan.FromMilliseconds(50),
                 DispatcherPriority.Normal,
                 new EventHandler((o, e) =>
@@ -79,6 +74,8 @@ namespace DRJ
                     }
 
                 }), Dispatcher.CurrentDispatcher);
+            timer.Start();
+            
         }
     }
 }

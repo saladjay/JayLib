@@ -104,6 +104,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\OrientationThumb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Shadow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -137,6 +141,7 @@
     <Compile Include="LedSlider.cs" />
     <Compile Include="ListDisplayer.cs" />
     <Compile Include="ListDisplayItem.cs" />
+    <Compile Include="OrientationThumb.cs" />
     <Compile Include="Panels\ReversedUniformGrid.cs" />
     <Compile Include="Panels\TickMarkPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

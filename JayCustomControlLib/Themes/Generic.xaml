@@ -17,7 +17,10 @@
         <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/JLight.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/JProgressRing.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/JColorPicker.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/JayCustomControlLib;component/Themes/OrientationThumb.xaml"/>
     </ResourceDictionary.MergedDictionaries>
+
+
 
 
 </ResourceDictionary>

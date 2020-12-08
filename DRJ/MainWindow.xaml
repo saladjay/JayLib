@@ -12,7 +12,12 @@
     </Window.DataContext>
     <DockPanel>
         <Grid DockPanel.Dock="Top" MinHeight="20"></Grid>
-        <Grid DockPanel.Dock="Top" MinHeight="60"></Grid>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" MinHeight="60">
+            <Button Width="20" Height="20"></Button>
+            <Button Width="20" Height="20"></Button>
+            <Button Width="20" Height="20"></Button>
+            <Button Width="20" Height="20"></Button>
+        </StackPanel>
         <DockPanel>
             <Grid DockPanel.Dock="Left">
                 <Grid.RowDefinitions>
@@ -22,7 +27,7 @@
                 <Button Grid.Row="0"></Button>
                 <Button Grid.Row="1"></Button>
             </Grid>
-            <Grid>
+            <StackPanel>
                 <Button Style="{StaticResource MaterialDesignFloatingActionLightButton}"
                     Command="{Binding SaveCommand}"
                     materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsSaving}"
@@ -48,10 +53,11 @@
                             </Style>
                         </materialDesign:PackIcon.Style>
                     </materialDesign:PackIcon>
-
                 </Button>
-
-            </Grid>
+                <Button Command="{Binding SaveCommand}">
+                    
+                </Button>
+            </StackPanel>
         </DockPanel>
     </DockPanel>
 </Window>

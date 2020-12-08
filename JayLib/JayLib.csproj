@@ -51,6 +51,7 @@
     <Compile Include="DoubleUtil.cs" />
     <Compile Include="JayFile\FileHelper.cs" />
     <Compile Include="JaySerialization\JSerializer.cs" />
+    <Compile Include="JayString\StringRegex.cs" />
     <Compile Include="Localization\LocalizationManager.cs" />
     <Compile Include="SingleTon.cs" />
     <Compile Include="JaySerialization\SerializerHelper.cs" />
