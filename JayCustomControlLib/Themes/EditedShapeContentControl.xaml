@@ -1,0 +1,65 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    xmlns:MyPanel="clr-namespace:JayCustomControlLib.Panels"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:MyAttachedPropeerty="clr-namespace:JayCustomControlLib.AttachedPropertys"
+                    xmlns:Converters="clr-namespace:JayCustomControlLib.Converter"
+                    xmlns:local="clr-namespace:JayCustomControlLib">
+    <Style TargetType="local:EditedShapeContentControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:EditedShapeContentControl">
+                    <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}" Background="Transparent">
+                        <ContentPresenter Content="{TemplateBinding Content}"/>
+                        <Control Name="resizeThumb" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Hidden">
+                            <Control.Template>
+                                <ControlTemplate TargetType="Control">
+                                    <Grid  Name="grid" Margin="2">
+                                        <local:EditedShapeThumb Height="3" x:Name="TopEdge" Cursor="SizeNS" Margin="0 -4 0 0" Background="Gray" Opacity="0.5"
+           VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                                        <local:EditedShapeThumb Width="3" x:Name="LeftEdge" Cursor="SizeWE" Margin="-4 0 0 0" Background="Gray" Opacity="0.5"
+           VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                                        <local:EditedShapeThumb Width="3" x:Name="RightEdge" Cursor="SizeWE" Margin="0 0 -4 0" Background="Gray" Opacity="0.5"
+           VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+                                        <local:EditedShapeThumb Height="3" x:Name="BottomEdge" Cursor="SizeNS" Margin="0 0 0 -4" Background="Gray" Opacity="0.5"
+           VerticalAlignment="Bottom"  HorizontalAlignment="Stretch"/>
+
+                                        <local:EditedShapeThumb Width="7" Height="7" x:Name="TopMidBox" Cursor="SizeNS" Margin="0 -6 0 0" Background="Black"
+           VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                                        <local:EditedShapeThumb Width="7" Height="7" x:Name="RightMidBox" Cursor="SizeWE" Margin="0 0 -6 0" Background="Black"
+           VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                        <local:EditedShapeThumb Width="7" Height="7" x:Name="BottomMidBox" Cursor="SizeNS" Margin="0 0 0 -6" Background="Black"
+           VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                                        <local:EditedShapeThumb Width="7" Height="7" x:Name="LeftMidBox" Cursor="SizeWE" Margin="-6 0 0 0" Background="Black"
+           VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+                                        <local:EditedShapeThumb Width="7" Height="7" x:Name="TopLeftCornerBox" Cursor="SizeNWSE" Margin="-6 -6 0 0" Background="Black"
+           VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                                        <local:EditedShapeThumb Width="7" Height="7" x:Name="TopRightCornerBox" Cursor="SizeNESW" Margin="0 -6 -6 0" Background="Black"
+           VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                                        <local:EditedShapeThumb Width="7" Height="7" x:Name="BottomLeftCornerBox" Cursor="SizeNESW" Margin="-6 0 0 -6" Background="Black"
+           VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+                                        <local:EditedShapeThumb Width="7" Height="7" x:Name="BottomRightCornerBox" Cursor="SizeNWSE" Margin="0 0 -6 -6" Background="Black"
+           VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"></Setter>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Control.Template>
+                        </Control>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Visibility" TargetName="resizeThumb" Value="Visible"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

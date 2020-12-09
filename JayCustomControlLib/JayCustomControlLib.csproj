@@ -56,6 +56,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\EditedShapeContentControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\EditedShapeThumb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -129,6 +137,8 @@
     <Compile Include="Converter\ShadowConverter.cs" />
     <Compile Include="Converter\StringToVisibilityConverter.cs" />
     <Compile Include="DrawerHost.cs" />
+    <Compile Include="EditedShapeContentControl.cs" />
+    <Compile Include="EditedShapeThumb.cs" />
     <Compile Include="JColorPicker.cs" />
     <Compile Include="JLight.cs" />
     <Compile Include="JLimitGDSlider.cs" />

@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    xmlns:MyPanel="clr-namespace:JayCustomControlLib.Panels"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:MyAttachedPropeerty="clr-namespace:JayCustomControlLib.AttachedPropertys"
+                    xmlns:Converters="clr-namespace:JayCustomControlLib.Converter"
+                    xmlns:local="clr-namespace:JayCustomControlLib">
+    <Style TargetType="local:EditedShapeThumb">
+        <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:EditedShapeThumb">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
