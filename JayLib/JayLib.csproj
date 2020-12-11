@@ -68,5 +68,8 @@
     <Compile Include="WPF.BasicClass\WeakEventManager.cs" />
     <Compile Include="WPF.BasicClass\WindowHelper.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Activator\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
