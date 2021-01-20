@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -30,21 +31,54 @@ namespace ControlTest
         public MainWindow()
         {
             InitializeComponent();
+            Random random = new Random();
+
+            dataGrid.ItemsSource = new ObservableCollection<Person>()
+            {
+                new Person(){A=false,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name="戴戴1"},
+                new Person(){A=true,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name="戴雯"},
+                new Person(){A=false,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name="进击"},
+                new Person(){A=true,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name="进去"},
+                new Person(){A=false,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name="病案"},
+                new Person(){A=true,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name=""},
+                new Person(){A=false,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100)},
+            };
+
+
+            var cvs = CollectionViewSource.GetDefaultView(dataGrid.ItemsSource);
+            if (cvs != null && cvs.CanSort)
+            {
+                cvs.SortDescriptions.Clear();
+
+                cvs.SortDescriptions.Add(new System.ComponentModel.SortDescription("Name", System.ComponentModel.ListSortDirection.Ascending));
+                cvs.SortDescriptions.Add(new System.ComponentModel.SortDescription("B", System.ComponentModel.ListSortDirection.Ascending));
+            }
+            this.KeyDown += MainWindow_KeyDown;
         }
 
-        private void OrientationThumb_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
-            Canvas.SetTop(sender as OrientationThumb, Canvas.GetTop(sender as OrientationThumb) + e.VerticalChange);
-            Canvas.SetLeft(sender as OrientationThumb, Canvas.GetLeft(sender as OrientationThumb) + e.HorizontalChange);
-            //Debug.WriteLine(e.VerticalChange.ToString());
-            //Debug.WriteLine(Canvas.GetTop(sender as OrientationThumb).ToString());
-            Debug.WriteLine(e.VerticalChange.ToString());
-            Debug.WriteLine(Canvas.GetTop(sender as OrientationThumb).ToString());
+            var sender_key = e.Key;
+            var status_key = e.KeyStates;
+            if (e.KeyStates == Keyboard.GetKeyStates(Key.LeftAlt) && e.KeyStates == Keyboard.GetKeyStates(Key.Space))
+            {
+                int a = 0;
+            }
+            if (ModifierKeys.Alt == Keyboard.Modifiers && e.KeyStates == Keyboard.GetKeyStates(Key.Space))
+            {
+                int b = 0;
+            }
         }
+    }
 
-        private void Thumb_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
-        {
-            Canvas.SetTop(sender as Thumb, Canvas.GetTop(sender as Thumb) + e.VerticalChange);
-        }
+    public class Person
+    {
+        public bool A { get; set; }
+        public int B { get; set; }
+        public int C { get; set; }
+        public int D { get; set; }
+        public int E { get; set; }
+        public string Name { get; set; }
+
     }
 }

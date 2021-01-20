@@ -1,0 +1,19 @@
+﻿<Window x:Class="AsynchronousProgramming.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AsynchronousProgramming"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" LastChildFill="True">
+            <TextBlock DockPanel.Dock="Left">download address: </TextBlock>
+            <Button DockPanel.Dock="Right" Click="Button_Click">download</Button>
+            <TextBox Name="txbUrl"></TextBox>
+        </DockPanel>
+        <GroupBox Header="status: ">
+            <TextBox Name="rtbState"></TextBox>
+        </GroupBox>
+    </DockPanel>
+</Window>

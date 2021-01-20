@@ -11,7 +11,7 @@ namespace JayLib.JayString
         /// <summary>
         /// replace "{0}" with attribute's name
         /// </summary>
-        public static string AttributeContent = @"\s*{0}\s*=\s*""\w*\s*""";
+        public static string AttributeContent = @"\s+{0}\s*=\s*""\w*\s*""\s*";
 
 
         /// <summary>
