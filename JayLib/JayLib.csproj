@@ -65,6 +65,7 @@
     <Compile Include="WPF.BasicClass\Messeager.cs" />
     <Compile Include="WPF.BasicClass\NotificationObject.cs" />
     <Compile Include="WPF.BasicClass\Commands\RelayCommand.cs" />
+    <Compile Include="WPF.BasicClass\TrulyObservableCollection.cs" />
     <Compile Include="WPF.BasicClass\WeakEventManager.cs" />
     <Compile Include="WPF.BasicClass\WindowHelper.cs" />
   </ItemGroup>

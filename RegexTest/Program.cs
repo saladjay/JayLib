@@ -28,7 +28,7 @@ namespace RegexTest
             Regex regex1 = new Regex(@"\s*""\w*""");
             Regex regex2 = new Regex("[\\u4E00-\\u9FA5A-Za-z0-9_]+");
             var removeCount = 0;
-            foreach (Match mch in Regex.Matches(inputString, string.Format(@"\s+{0}\s*=\s*""\w*\s*""\s*", "Name"), RegexOptions.Multiline))
+            foreach (Match mch in Regex.Matches(inputString, string.Format(@"\s+{0}\s*=\s*""\w*""\s*", "Name"), RegexOptions.Multiline))
             {
                 string x = mch.Value;
                 var mch1 = regex1.Match(x).Value;
