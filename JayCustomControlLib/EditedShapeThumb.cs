@@ -1,4 +1,6 @@
-﻿using System;
+﻿using JayCustomControlLib.AttachedPropertys;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,7 +53,10 @@ namespace JayCustomControlLib
             DefaultStyleKeyProperty.OverrideMetadata(typeof(EditedShapeThumb), new FrameworkPropertyMetadata(typeof(EditedShapeThumb)));
         }
 
-        public EditedShapeContentControl EditedShapeContentControl { get; set; }
+        public string RelatedString { get; set; }
+        public UIElement RelatedUIElement { get; set; } = null;
+        public FrameworkElement RelatedFrameworkElement { get; set; } = null;
+        public Control RelatedControl { get; set; } = null;
 
         public EditedShapeThumb()
         {
@@ -65,7 +70,15 @@ namespace JayCustomControlLib
         /// <param name="e"></param>
         private void ResizeThumb_DragDelta(object sender, DragDeltaEventArgs e)
         {
-            if (EditedShapeContentControl != null)
+            if (RelatedControl == null)
+            {
+                RelatedControl = RelatedElementProperty.GetRelatedControl(this);
+            }
+            var b = VisualTreeHelper.GetParent(this) as FrameworkElement;
+            var c = VisualTreeHelper.GetParent(b) as FrameworkElement;
+            var d = VisualTreeHelper.GetParent(c) as FrameworkElement;
+
+            if (RelatedControl != null)
             {
                 double deltaVertical, deltaHorizontal;
 
@@ -73,14 +86,14 @@ namespace JayCustomControlLib
                 {
                     case VerticalAlignment.Bottom:
                         deltaVertical = Math.Min(-e.VerticalChange,
-                            EditedShapeContentControl.ActualHeight - EditedShapeContentControl.MinHeight);
-                        EditedShapeContentControl.Height -= deltaVertical;
+                            RelatedControl.ActualHeight - RelatedControl.MinHeight);
+                        RelatedControl.Height -= deltaVertical;
                         break;
                     case VerticalAlignment.Top:
                         deltaVertical = Math.Min(e.VerticalChange,
-                            EditedShapeContentControl.ActualHeight - EditedShapeContentControl.MinHeight);
+                            RelatedControl.ActualHeight - RelatedControl.MinHeight);
                         //Canvas.SetTop(EditedShapeContentControl, Canvas.GetTop(EditedShapeContentControl) + deltaVertical);
-                        EditedShapeContentControl.Height -= deltaVertical;
+                        RelatedControl.Height -= deltaVertical;
                         break;
                     default:
                         break;
@@ -90,20 +103,142 @@ namespace JayCustomControlLib
                 {
                     case HorizontalAlignment.Left:
                         deltaHorizontal = Math.Min(e.HorizontalChange,
-                            EditedShapeContentControl.ActualWidth - EditedShapeContentControl.MinWidth);
+                            RelatedControl.ActualWidth - RelatedControl.MinWidth);
                         //Canvas.SetLeft(EditedShapeContentControl, Canvas.GetLeft(EditedShapeContentControl) + deltaHorizontal);
-                        EditedShapeContentControl.Width -= deltaHorizontal;
+                        RelatedControl.Width -= deltaHorizontal;
                         break;
                     case HorizontalAlignment.Right:
                         deltaHorizontal = Math.Min(-e.HorizontalChange,
-                            EditedShapeContentControl.ActualWidth - EditedShapeContentControl.MinWidth);
-                        EditedShapeContentControl.Width -= deltaHorizontal;
+                            RelatedControl.ActualWidth - RelatedControl.MinWidth);
+                        RelatedControl.Width -= deltaHorizontal;
                         break;
                     default:
                         break;
                 }
             }
             e.Handled = true;
+        }
+    }
+
+    public class ThumbParent : Panel
+    {
+        static ThumbParent()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ThumbParent), new FrameworkPropertyMetadata(typeof(ThumbParent)));
+        }
+
+        public override void OnApplyTemplate()
+        {
+            foreach (UIElement child in Children)
+            {
+                if (child is EditedShapeThumb thumb && this.Parent is FrameworkElement fe)
+                {
+                    thumb.RelatedFrameworkElement = fe;
+                }
+            }
+            base.OnApplyTemplate();
+        }
+
+        protected override void OnIsMouseDirectlyOverChanged(DependencyPropertyChangedEventArgs e)
+        {
+            this.Visibility = Visibility.Visible;
+            base.OnIsMouseDirectlyOverChanged(e);
+        }
+
+        protected override void OnMouseEnter(MouseEventArgs e)
+        {
+            this.Visibility = Visibility.Visible;
+            base.OnMouseEnter(e);
+        }
+
+        protected override void OnMouseLeave(MouseEventArgs e)
+        {
+            this.Visibility = Visibility.Hidden;
+            base.OnMouseLeave(e);
+        }
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            foreach (UIElement child in Children)
+            {
+                if (child is Thumb thumb)
+                {
+                    if (thumb.HorizontalAlignment== HorizontalAlignment.Stretch)
+                    {
+                        thumb.Measure(new Size(availableSize.Width,thumb.Height));
+                    }
+                    else if (thumb.VerticalAlignment == VerticalAlignment.Stretch)
+                    {
+                        thumb.Measure(new Size(thumb.Width, availableSize.Height));
+                    }
+                    else
+                    {
+                        thumb.Measure(new Size(thumb.Width, thumb.Height));
+                    }
+                    
+                    var size = thumb.DesiredSize;
+                    var w = thumb.Width;
+                    var h = thumb.Height;
+                }
+                else
+                {
+                    child.Measure(availableSize);
+                }
+            }
+            return availableSize;
+        }
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            foreach (UIElement child in Children)
+            {
+                if (child is Thumb thumb)
+                {
+                    var halfw = double.IsNaN(thumb.Width) ? this.Width / 2 : thumb.Width / 2;
+                    var halfh = double.IsNaN(thumb.Height) ? this.Height / 2 : thumb.Height / 2;
+                    Point lt = new Point(), rb = new Point();
+                    SetZIndex(thumb, 1);
+                    switch (thumb.HorizontalAlignment)
+                    {
+                        case HorizontalAlignment.Left:
+                            lt.X = 0 - halfw;
+                            break;
+                        case HorizontalAlignment.Center:
+                            lt.X = this.ActualWidth / 2 - halfw;
+                            break;
+                        case HorizontalAlignment.Right:
+                            lt.X = this.ActualWidth - halfw;
+                            break;
+                        case HorizontalAlignment.Stretch:
+                            lt.X = 0;
+                            SetZIndex(thumb, 0);
+                            break;
+                        default:
+                            break;
+                    }
+                    rb.X = lt.X + halfw * 2;
+                    switch (thumb.VerticalAlignment)
+                    {
+                        case VerticalAlignment.Top:
+                            lt.Y = 0 - halfh;
+                            break;
+                        case VerticalAlignment.Center:
+                            lt.Y = this.ActualHeight / 2 - halfh;
+                            break;
+                        case VerticalAlignment.Bottom:
+                            lt.Y = this.ActualHeight - halfh;
+                            break;
+                        case VerticalAlignment.Stretch:
+                            lt.Y = 0;
+                            break;
+                        default:
+                            break;
+                    }
+                    rb.Y = lt.Y + halfh * 2;
+                    thumb.Arrange(new Rect(lt, rb));
+                }
+            }
+            return finalSize;
         }
     }
 }

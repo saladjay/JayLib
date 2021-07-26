@@ -43,20 +43,7 @@ namespace JayCustomControlLib
     ///     <MyNamespace:EditedShapeContentControl/>
     ///
     /// </summary>
-    [TemplatePart(Name = "TopEdge", Type = typeof(EditedShapeThumb))]
-    [TemplatePart(Name = "LeftEdge", Type = typeof(EditedShapeThumb))]
-    [TemplatePart(Name = "RightEdge", Type = typeof(EditedShapeThumb))]
-    [TemplatePart(Name = "BottomEdge", Type = typeof(EditedShapeThumb))]
 
-    [TemplatePart(Name = "TopMidBox", Type = typeof(EditedShapeThumb))]
-    [TemplatePart(Name = "RightMidBox", Type = typeof(EditedShapeThumb))]
-    [TemplatePart(Name = "LeftMidBox", Type = typeof(EditedShapeThumb))]
-    [TemplatePart(Name = "BottomMidBox", Type = typeof(EditedShapeThumb))]
-
-    [TemplatePart(Name = "TopLeftCornerBox", Type = typeof(EditedShapeThumb))]
-    [TemplatePart(Name = "TopRightCornerBox", Type = typeof(EditedShapeThumb))]
-    [TemplatePart(Name = "BottomLeftCornerBox", Type = typeof(EditedShapeThumb))]
-    [TemplatePart(Name = "BottomRightCornerBox", Type = typeof(EditedShapeThumb))]
     public class EditedShapeContentControl : ContentControl
     {
         static EditedShapeContentControl()
@@ -67,41 +54,42 @@ namespace JayCustomControlLib
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+
             if (this.GetTemplateChild("TopEdge") is EditedShapeThumb topEdge)
-                topEdge.EditedShapeContentControl = this;
+                topEdge.RelatedControl = this;
 
             if (this.GetTemplateChild("LeftEdge") is EditedShapeThumb leftEdge)
-                leftEdge.EditedShapeContentControl = this;
+                leftEdge.RelatedControl = this;
 
             if (this.GetTemplateChild("RightEdge") is EditedShapeThumb RightEdge)
-                RightEdge.EditedShapeContentControl = this;
+                RightEdge.RelatedControl = this;
 
             if (this.GetTemplateChild("BottomEdge") is EditedShapeThumb BottomEdge)
-                BottomEdge.EditedShapeContentControl = this;
+                BottomEdge.RelatedControl = this;
 
             if (this.GetTemplateChild("TopMidBox") is EditedShapeThumb topMidEdge)
-                topMidEdge.EditedShapeContentControl = this;
+                topMidEdge.RelatedControl = this;
 
             if (this.GetTemplateChild("RightMidBox") is EditedShapeThumb rightMidEdge)
-                rightMidEdge.EditedShapeContentControl = this;
+                rightMidEdge.RelatedControl = this;
 
             if (this.GetTemplateChild("LeftMidBox") is EditedShapeThumb leftMidEdge)
-                leftMidEdge.EditedShapeContentControl = this;
+                leftMidEdge.RelatedControl = this;
 
             if (this.GetTemplateChild("BottomMidBox") is EditedShapeThumb bottomMidEdge)
-                bottomMidEdge.EditedShapeContentControl = this;
+                bottomMidEdge.RelatedControl = this;
 
             if (this.GetTemplateChild("TopLeftCornerBox") is EditedShapeThumb topLeftCornerBox)
-                topLeftCornerBox.EditedShapeContentControl = this;
+                topLeftCornerBox.RelatedControl = this;
 
             if (this.GetTemplateChild("TopRightCornerBox") is EditedShapeThumb topRightCornerBox)
-                topRightCornerBox.EditedShapeContentControl = this;
+                topRightCornerBox.RelatedControl = this;
 
             if (this.GetTemplateChild("BottomLeftCornerBox") is EditedShapeThumb bottomLeftCornerBox)
-                bottomLeftCornerBox.EditedShapeContentControl = this;
+                bottomLeftCornerBox.RelatedControl = this;
 
             if (this.GetTemplateChild("BottomRightCornerBox") is EditedShapeThumb bottomRightCornerBox)
-                bottomRightCornerBox.EditedShapeContentControl = this;
+                bottomRightCornerBox.RelatedControl = this;
         }
     }
 }

@@ -130,6 +130,7 @@
     <Compile Include="ActiveDisplayItem.cs" />
     <Compile Include="AttachedPropertys\PanelItemsCollectionProperty.cs" />
     <Compile Include="AttachedPropertys\PanelZIndexAssist.cs" />
+    <Compile Include="AttachedPropertys\RelatedElementProperty.cs" />
     <Compile Include="AttachedPropertys\ShadowAssist.cs" />
     <Compile Include="Blank.cs" />
     <Compile Include="CommonBasicClass\MyCommandHelper.cs" />

@@ -33,27 +33,27 @@ namespace ControlTest
             InitializeComponent();
             Random random = new Random();
 
-            dataGrid.ItemsSource = new ObservableCollection<Person>()
-            {
-                new Person(){A=false,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name="戴戴1"},
-                new Person(){A=true,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name="戴雯"},
-                new Person(){A=false,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name="进击"},
-                new Person(){A=true,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name="进去"},
-                new Person(){A=false,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name="病案"},
-                new Person(){A=true,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name=""},
-                new Person(){A=false,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100)},
-            };
+            //dataGrid.ItemsSource = new ObservableCollection<Person>()
+            //{
+            //    new Person(){A=false,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name="戴戴1"},
+            //    new Person(){A=true,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name="戴雯"},
+            //    new Person(){A=false,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name="进击"},
+            //    new Person(){A=true,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name="进去"},
+            //    new Person(){A=false,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name="病案"},
+            //    new Person(){A=true,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100),Name=""},
+            //    new Person(){A=false,B=random.Next(1,100),C=random.Next(1,100),D=random.Next(1,100),E=random.Next(1,100)},
+            //};
 
 
-            var cvs = CollectionViewSource.GetDefaultView(dataGrid.ItemsSource);
-            if (cvs != null && cvs.CanSort)
-            {
-                cvs.SortDescriptions.Clear();
+            //var cvs = CollectionViewSource.GetDefaultView(dataGrid.ItemsSource);
+            //if (cvs != null && cvs.CanSort)
+            //{
+            //    cvs.SortDescriptions.Clear();
 
-                cvs.SortDescriptions.Add(new System.ComponentModel.SortDescription("Name", System.ComponentModel.ListSortDirection.Ascending));
-                cvs.SortDescriptions.Add(new System.ComponentModel.SortDescription("B", System.ComponentModel.ListSortDirection.Ascending));
-            }
-            this.KeyDown += MainWindow_KeyDown;
+            //    cvs.SortDescriptions.Add(new System.ComponentModel.SortDescription("Name", System.ComponentModel.ListSortDirection.Ascending));
+            //    cvs.SortDescriptions.Add(new System.ComponentModel.SortDescription("B", System.ComponentModel.ListSortDirection.Ascending));
+            //}
+            //this.KeyDown += MainWindow_KeyDown;
         }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)

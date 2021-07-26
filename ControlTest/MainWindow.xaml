@@ -38,59 +38,11 @@
     </Window.Resources>
     <MyCustomControl:DrawerHost  Background="White">
         <Grid>
-            <DataGrid Name="dataGrid" AutoGenerateColumns="False">
-                <DataGrid.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.ContainerStyle>
-                            <Style TargetType="{x:Type GroupItem}">
-                                <Setter Property="Margin" Value="0,0,0,5"/>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type GroupItem}">
-                                            <Expander IsExpanded="True" Background="#FF112255" BorderBrush="#FF002255"   BorderThickness="1,1,1,5">
-                                                <Expander.Header>
-                                                    <DockPanel>
-                                                        <TextBlock  Foreground="White" FontWeight="Bold" Text="{Binding Path=Name}"/>
-                                                    </DockPanel>
-                                                </Expander.Header>
-                                                <Expander.Content>
-                                                    <ItemsPresenter />
-                                                </Expander.Content>
-                                            </Expander>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </GroupStyle.ContainerStyle>
-                    </GroupStyle>
-                </DataGrid.GroupStyle>
-                <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Header="A" Binding="{Binding A}"/>
-                    <DataGridTextColumn  Header="B" Binding="{Binding B}"/>
-                    <DataGridTextColumn  Header="C" Binding="{Binding C}"/>
-                    <DataGridTextColumn  Header="D" Binding="{Binding D}"/>
-                    <DataGridTextColumn  Header="E" Binding="{Binding E}"/>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
-                </DataGrid.Columns>
-            </DataGrid>
+            <MyCustomControl:EditedShapeContentControl Width="100" Height="30" Visibility="Visible">
+                <Button  Content="aaaaaaaaaaa"></Button>
+            </MyCustomControl:EditedShapeContentControl>
+            <Button Width="100" Height="30" Content="aaaaaaaaaaa" HorizontalAlignment="Left"></Button>
 
-            <DataGrid Name="dataGrid1" AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Header="A" Binding="{Binding A}"/>
-                    <DataGridTemplateColumn Header="A">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn  Header="B" Binding="{Binding B}"/>
-                    <DataGridTextColumn  Header="C" Binding="{Binding C}"/>
-                    <DataGridTextColumn  Header="D" Binding="{Binding D}"/>
-                    <DataGridTextColumn  Header="E" Binding="{Binding E}"/>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
-                </DataGrid.Columns>
-            </DataGrid>
         </Grid>
     </MyCustomControl:DrawerHost>
 </Window>

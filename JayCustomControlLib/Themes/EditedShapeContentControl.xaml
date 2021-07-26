@@ -6,51 +6,44 @@
                     xmlns:MyAttachedPropeerty="clr-namespace:JayCustomControlLib.AttachedPropertys"
                     xmlns:Converters="clr-namespace:JayCustomControlLib.Converter"
                     xmlns:local="clr-namespace:JayCustomControlLib">
+
+    
+    
     <Style TargetType="local:EditedShapeContentControl">
+        <Setter Property="MyAttachedPropeerty:RelatedElementProperty.RelatedKey" Value="{Binding RelativeSource={RelativeSource Mode=Self}}"></Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:EditedShapeContentControl">
-                    <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}" Background="Transparent">
+                    <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}" Name="mainname" Background="Transparent" >
                         <ContentPresenter Content="{TemplateBinding Content}"/>
-                        <Control Name="resizeThumb" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Hidden">
-                            <Control.Template>
-                                <ControlTemplate TargetType="Control">
-                                    <Grid  Name="grid" Margin="2">
-                                        <local:EditedShapeThumb Height="3" x:Name="TopEdge" Cursor="SizeNS" Margin="0 -4 0 0" Background="Gray" Opacity="0.5"
-           VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
-                                        <local:EditedShapeThumb Width="3" x:Name="LeftEdge" Cursor="SizeWE" Margin="-4 0 0 0" Background="Gray" Opacity="0.5"
-           VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
-                                        <local:EditedShapeThumb Width="3" x:Name="RightEdge" Cursor="SizeWE" Margin="0 0 -4 0" Background="Gray" Opacity="0.5"
-           VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
-                                        <local:EditedShapeThumb Height="3" x:Name="BottomEdge" Cursor="SizeNS" Margin="0 0 0 -4" Background="Gray" Opacity="0.5"
-           VerticalAlignment="Bottom"  HorizontalAlignment="Stretch"/>
+                        <local:ThumbParent x:Name="resizeThumb" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Hidden">
+                            <local:EditedShapeThumb Height="3" x:Name="TopEdge" Cursor="SizeNS" Margin="0 -4 0 0" Background="Gray" Opacity="0.5"
+           VerticalAlignment="Top" HorizontalAlignment="Stretch" MyAttachedPropeerty:RelatedElementProperty.RelatedKey="MainGrid"/>
+                            <local:EditedShapeThumb Width="3" x:Name="LeftEdge" Cursor="SizeWE" Margin="-4 0 0 0" Background="Gray" Opacity="0.5"
+           VerticalAlignment="Stretch" HorizontalAlignment="Left" MyAttachedPropeerty:RelatedElementProperty.RelatedKey="MainGrid"/>
+                            <local:EditedShapeThumb Width="3" x:Name="RightEdge" Cursor="SizeWE" Margin="0 0 -4 0" Background="Gray" Opacity="0.5"
+           VerticalAlignment="Stretch" HorizontalAlignment="Right" MyAttachedPropeerty:RelatedElementProperty.RelatedKey="MainGrid"/>
+                            <local:EditedShapeThumb Height="3" x:Name="BottomEdge" Cursor="SizeNS" Margin="0 0 0 -4" Background="Gray" Opacity="0.5"
+           VerticalAlignment="Bottom"  HorizontalAlignment="Stretch" MyAttachedPropeerty:RelatedElementProperty.RelatedKey="MainGrid"/>
 
-                                        <local:EditedShapeThumb Width="7" Height="7" x:Name="TopMidBox" Cursor="SizeNS" Margin="0 -6 0 0" Background="Black"
-           VerticalAlignment="Top" HorizontalAlignment="Center"/>
-                                        <local:EditedShapeThumb Width="7" Height="7" x:Name="RightMidBox" Cursor="SizeWE" Margin="0 0 -6 0" Background="Black"
-           VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                        <local:EditedShapeThumb Width="7" Height="7" x:Name="BottomMidBox" Cursor="SizeNS" Margin="0 0 0 -6" Background="Black"
-           VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-                                        <local:EditedShapeThumb Width="7" Height="7" x:Name="LeftMidBox" Cursor="SizeWE" Margin="-6 0 0 0" Background="Black"
-           VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            <local:EditedShapeThumb Width="7" Height="7" x:Name="TopMidBox" Cursor="SizeNS" Margin="0 -6 0 0" Background="Black"
+           VerticalAlignment="Top" HorizontalAlignment="Center" MyAttachedPropeerty:RelatedElementProperty.RelatedKey="MainGrid"/>
+                            <local:EditedShapeThumb Width="7" Height="7" x:Name="RightMidBox" Cursor="SizeWE" Margin="0 0 -6 0" Background="Black"
+           VerticalAlignment="Center" HorizontalAlignment="Right" MyAttachedPropeerty:RelatedElementProperty.RelatedKey="MainGrid"/>
+                            <local:EditedShapeThumb Width="7" Height="7" x:Name="BottomMidBox" Cursor="SizeNS" Margin="0 0 0 -6" Background="Black"
+           VerticalAlignment="Bottom" HorizontalAlignment="Center" MyAttachedPropeerty:RelatedElementProperty.RelatedKey="MainGrid"/>
+                            <local:EditedShapeThumb Width="7" Height="7" x:Name="LeftMidBox" Cursor="SizeWE" Margin="-6 0 0 0" Background="Black"
+           VerticalAlignment="Center" HorizontalAlignment="Left" MyAttachedPropeerty:RelatedElementProperty.RelatedKey="MainGrid"/>
 
-                                        <local:EditedShapeThumb Width="7" Height="7" x:Name="TopLeftCornerBox" Cursor="SizeNWSE" Margin="-6 -6 0 0" Background="Black"
-           VerticalAlignment="Top" HorizontalAlignment="Left"/>
-                                        <local:EditedShapeThumb Width="7" Height="7" x:Name="TopRightCornerBox" Cursor="SizeNESW" Margin="0 -6 -6 0" Background="Black"
-           VerticalAlignment="Top" HorizontalAlignment="Right"/>
-                                        <local:EditedShapeThumb Width="7" Height="7" x:Name="BottomLeftCornerBox" Cursor="SizeNESW" Margin="-6 0 0 -6" Background="Black"
-           VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
-                                        <local:EditedShapeThumb Width="7" Height="7" x:Name="BottomRightCornerBox" Cursor="SizeNWSE" Margin="0 0 -6 -6" Background="Black"
-           VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
-                                    </Grid>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Visibility" Value="Visible"></Setter>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Control.Template>
-                        </Control>
+                            <local:EditedShapeThumb Width="7" Height="7" x:Name="TopLeftCornerBox" Cursor="SizeNWSE" Margin="-6 -6 0 0" Background="Black"
+           VerticalAlignment="Top" HorizontalAlignment="Left" MyAttachedPropeerty:RelatedElementProperty.RelatedKey="MainGrid"/>
+                            <local:EditedShapeThumb Width="7" Height="7" x:Name="TopRightCornerBox" Cursor="SizeNESW" Margin="0 -6 -6 0" Background="Black"
+           VerticalAlignment="Top" HorizontalAlignment="Right" MyAttachedPropeerty:RelatedElementProperty.RelatedKey="MainGrid"/>
+                            <local:EditedShapeThumb Width="7" Height="7" x:Name="BottomLeftCornerBox" Cursor="SizeNESW" Margin="-6 0 0 -6" Background="Black"
+           VerticalAlignment="Bottom" HorizontalAlignment="Left" MyAttachedPropeerty:RelatedElementProperty.RelatedKey="MainGrid"/>
+                            <local:EditedShapeThumb Width="7" Height="7" x:Name="BottomRightCornerBox" Cursor="SizeNWSE" Margin="0 0 -6 -6" Background="Black"
+           VerticalAlignment="Bottom" HorizontalAlignment="Right" MyAttachedPropeerty:RelatedElementProperty.RelatedKey="MainGrid"/>
+                        </local:ThumbParent>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
