@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -53,10 +55,27 @@ namespace JayCustomControlLib
             DefaultStyleKeyProperty.OverrideMetadata(typeof(EditedShapeThumb), new FrameworkPropertyMetadata(typeof(EditedShapeThumb)));
         }
 
+
+
+        public EditedProperty EditedContentProperty
+        {
+            get { return (EditedProperty)GetValue(EditedContentPropertyProperty); }
+            set { SetValue(EditedContentPropertyProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for EditedContentProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty EditedContentPropertyProperty =
+            DependencyProperty.Register("EditedContentProperty", typeof(EditedProperty), typeof(EditedShapeThumb), new PropertyMetadata(EditedProperty.shape));
+
+
+
+
+
+
+
         public string RelatedString { get; set; }
-        public UIElement RelatedUIElement { get; set; } = null;
-        public FrameworkElement RelatedFrameworkElement { get; set; } = null;
-        public Control RelatedControl { get; set; } = null;
+
+        public FrameworkElement RelatedFramework { get; set; } = null;
 
         public EditedShapeThumb()
         {
@@ -70,54 +89,78 @@ namespace JayCustomControlLib
         /// <param name="e"></param>
         private void ResizeThumb_DragDelta(object sender, DragDeltaEventArgs e)
         {
-            if (RelatedControl == null)
+            if (RelatedFramework != null)
             {
-                RelatedControl = RelatedElementProperty.GetRelatedControl(this);
-            }
-            var b = VisualTreeHelper.GetParent(this) as FrameworkElement;
-            var c = VisualTreeHelper.GetParent(b) as FrameworkElement;
-            var d = VisualTreeHelper.GetParent(c) as FrameworkElement;
-
-            if (RelatedControl != null)
-            {
-                double deltaVertical, deltaHorizontal;
-
-                switch (VerticalAlignment)
+                if (EditedContentProperty == EditedProperty.shape)
                 {
-                    case VerticalAlignment.Bottom:
-                        deltaVertical = Math.Min(-e.VerticalChange,
-                            RelatedControl.ActualHeight - RelatedControl.MinHeight);
-                        RelatedControl.Height -= deltaVertical;
-                        break;
-                    case VerticalAlignment.Top:
-                        deltaVertical = Math.Min(e.VerticalChange,
-                            RelatedControl.ActualHeight - RelatedControl.MinHeight);
-                        //Canvas.SetTop(EditedShapeContentControl, Canvas.GetTop(EditedShapeContentControl) + deltaVertical);
-                        RelatedControl.Height -= deltaVertical;
-                        break;
-                    default:
-                        break;
+                    double deltaVertical, deltaHorizontal;
+
+                    switch (VerticalAlignment)
+                    {
+                        case VerticalAlignment.Bottom:
+                            deltaVertical = Math.Min(-e.VerticalChange,
+                                RelatedFramework.ActualHeight - RelatedFramework.MinHeight);
+                            RelatedFramework.Height -= deltaVertical;
+                            break;
+                        case VerticalAlignment.Top:
+                            if (RelatedFramework.Parent is Canvas)
+                            {
+                                var py = Canvas.GetTop(RelatedFramework);
+                                py = double.IsNaN(py) ? 0 : py;
+                                Canvas.SetTop(RelatedFramework, py + e.VerticalChange);
+                            }
+                            deltaVertical = Math.Min(e.VerticalChange,
+                                RelatedFramework.ActualHeight - RelatedFramework.MinHeight);
+                            RelatedFramework.Height -= deltaVertical;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    switch (HorizontalAlignment)
+                    {
+                        case HorizontalAlignment.Left:
+                            if (RelatedFramework.Parent is Canvas)
+                            {
+                                var px = Canvas.GetLeft(RelatedFramework);
+                                px = double.IsNaN(px) ? 0 : px;
+                                Canvas.SetLeft(RelatedFramework, px + e.HorizontalChange);
+                            }
+                            deltaHorizontal = Math.Min(e.HorizontalChange,
+                                RelatedFramework.ActualWidth - RelatedFramework.MinWidth);
+                            RelatedFramework.Width -= deltaHorizontal;
+                            break;
+                        case HorizontalAlignment.Right:
+                            deltaHorizontal = Math.Min(-e.HorizontalChange,
+                                RelatedFramework.ActualWidth - RelatedFramework.MinWidth);
+                            RelatedFramework.Width -= deltaHorizontal;
+                            break;
+                        default:
+                            break;
+                    }
                 }
-
-                switch (HorizontalAlignment)
+                else if (EditedContentProperty == EditedProperty.position)
                 {
-                    case HorizontalAlignment.Left:
-                        deltaHorizontal = Math.Min(e.HorizontalChange,
-                            RelatedControl.ActualWidth - RelatedControl.MinWidth);
-                        //Canvas.SetLeft(EditedShapeContentControl, Canvas.GetLeft(EditedShapeContentControl) + deltaHorizontal);
-                        RelatedControl.Width -= deltaHorizontal;
-                        break;
-                    case HorizontalAlignment.Right:
-                        deltaHorizontal = Math.Min(-e.HorizontalChange,
-                            RelatedControl.ActualWidth - RelatedControl.MinWidth);
-                        RelatedControl.Width -= deltaHorizontal;
-                        break;
-                    default:
-                        break;
+                    if (RelatedFramework.Parent is Canvas)
+                    {
+                        var px = Canvas.GetLeft(RelatedFramework);
+                        var py = Canvas.GetTop(RelatedFramework);
+                        px = double.IsNaN(px) ? 0 : px;
+                        py = double.IsNaN(py) ? 0 : py;
+                        Canvas.SetLeft(RelatedFramework, px + e.HorizontalChange);
+                        Canvas.SetTop(RelatedFramework, py + e.VerticalChange);
+
+                    }
                 }
             }
             e.Handled = true;
         }
+    }
+
+    public enum EditedProperty
+    {
+        position,
+        shape,
     }
 
     public class ThumbParent : Panel
@@ -127,35 +170,44 @@ namespace JayCustomControlLib
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ThumbParent), new FrameworkPropertyMetadata(typeof(ThumbParent)));
         }
 
-        public override void OnApplyTemplate()
+        public ThumbParent()
         {
-            foreach (UIElement child in Children)
+            Loaded += ThumbParent_Loaded;
+        }
+
+        private void ThumbParent_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (TemplatedParent is null && Parent is FrameworkElement fe)
             {
-                if (child is EditedShapeThumb thumb && this.Parent is FrameworkElement fe)
+                foreach (var item in Children)
                 {
-                    thumb.RelatedFrameworkElement = fe;
+                    if (item is EditedShapeThumb thumb)
+                    {
+                        thumb.RelatedFramework = fe;
+                    }
                 }
             }
-            base.OnApplyTemplate();
         }
 
-        protected override void OnIsMouseDirectlyOverChanged(DependencyPropertyChangedEventArgs e)
+        protected override void OnRender(DrawingContext dc)
         {
-            this.Visibility = Visibility.Visible;
-            base.OnIsMouseDirectlyOverChanged(e);
+            base.OnRender(dc);
+
+            if (TemplatedParent is FrameworkElement fe)
+            {
+                foreach (var item in Children)
+                {
+                    if (item is EditedShapeThumb thumb)
+                    {
+                        thumb.RelatedFramework = fe;
+                    }
+                }
+            }
         }
 
-        protected override void OnMouseEnter(MouseEventArgs e)
-        {
-            this.Visibility = Visibility.Visible;
-            base.OnMouseEnter(e);
-        }
+        
 
-        protected override void OnMouseLeave(MouseEventArgs e)
-        {
-            this.Visibility = Visibility.Hidden;
-            base.OnMouseLeave(e);
-        }
+        
 
         protected override Size MeasureOverride(Size availableSize)
         {
@@ -163,7 +215,11 @@ namespace JayCustomControlLib
             {
                 if (child is Thumb thumb)
                 {
-                    if (thumb.HorizontalAlignment== HorizontalAlignment.Stretch)
+                    if (thumb.HorizontalAlignment == HorizontalAlignment.Stretch&& thumb.VerticalAlignment == VerticalAlignment.Stretch)
+                    {
+                        thumb.Measure(new Size(availableSize.Width, availableSize.Height));
+                    }
+                    else if (thumb.HorizontalAlignment== HorizontalAlignment.Stretch)
                     {
                         thumb.Measure(new Size(availableSize.Width,thumb.Height));
                     }
@@ -190,12 +246,17 @@ namespace JayCustomControlLib
 
         protected override Size ArrangeOverride(Size finalSize)
         {
+            if(TemplatedParent is FrameworkElement fe){
+                finalSize.Width = fe.Width;
+                finalSize.Height = fe.Height;
+
+            }
             foreach (UIElement child in Children)
             {
                 if (child is Thumb thumb)
                 {
-                    var halfw = double.IsNaN(thumb.Width) ? this.Width / 2 : thumb.Width / 2;
-                    var halfh = double.IsNaN(thumb.Height) ? this.Height / 2 : thumb.Height / 2;
+                    var halfw = double.IsNaN(thumb.Width) ? finalSize.Width / 2 : thumb.Width / 2;
+                    var halfh = double.IsNaN(thumb.Height) ? finalSize.Height / 2 : thumb.Height / 2;
                     Point lt = new Point(), rb = new Point();
                     SetZIndex(thumb, 1);
                     switch (thumb.HorizontalAlignment)
@@ -204,10 +265,10 @@ namespace JayCustomControlLib
                             lt.X = 0 - halfw;
                             break;
                         case HorizontalAlignment.Center:
-                            lt.X = this.ActualWidth / 2 - halfw;
+                            lt.X = finalSize.Width / 2 - halfw;
                             break;
                         case HorizontalAlignment.Right:
-                            lt.X = this.ActualWidth - halfw;
+                            lt.X = finalSize.Width - halfw;
                             break;
                         case HorizontalAlignment.Stretch:
                             lt.X = 0;
@@ -223,10 +284,10 @@ namespace JayCustomControlLib
                             lt.Y = 0 - halfh;
                             break;
                         case VerticalAlignment.Center:
-                            lt.Y = this.ActualHeight / 2 - halfh;
+                            lt.Y = finalSize.Height / 2 - halfh;
                             break;
                         case VerticalAlignment.Bottom:
-                            lt.Y = this.ActualHeight - halfh;
+                            lt.Y = finalSize.Height - halfh;
                             break;
                         case VerticalAlignment.Stretch:
                             lt.Y = 0;

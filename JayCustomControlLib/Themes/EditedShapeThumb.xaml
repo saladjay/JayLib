@@ -7,6 +7,7 @@
                     xmlns:Converters="clr-namespace:JayCustomControlLib.Converter"
                     xmlns:local="clr-namespace:JayCustomControlLib">
     <Style TargetType="local:EditedShapeThumb">
+
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
         <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
@@ -20,5 +21,18 @@
         </Setter>
     </Style>
 
+    <Style TargetType="local:ThumbParent">
+        <Setter Property="Background" Value="Transparent"></Setter>
 
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.Setters>
+                    <Setter Property="Visibility" Value="Visible"></Setter>
+                </Trigger.Setters>
+            </Trigger>
+            <Trigger Property="IsMouseDirectlyOver" Value="True">
+                <Setter Property="Visibility" Value="Visible"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

@@ -16,71 +16,32 @@ namespace JayCustomControlLib.AttachedPropertys
 {
     public static class RelatedElementProperty
     {
-        private static Dictionary<string, UIElement> relatedValueControlDict = new Dictionary<string, UIElement>();
-        private static Dictionary<UIElement, string> relatedKeyControlDict = new Dictionary<UIElement, string>();
+        private static Dictionary<FrameworkElement, FrameworkElement> relatedControlDict = new Dictionary<FrameworkElement, FrameworkElement>();
 
-
-        public static string GetRelatedKey(DependencyObject obj)
+        public static FrameworkElement GetRelatedFrameworkElement(DependencyObject obj)
         {
-            return (string)obj.GetValue(RelatedKeyProperty);
+            return (FrameworkElement)obj.GetValue(RelatedFrameworkElementProperty);
         }
 
-        public static void SetRelatedKey(DependencyObject obj, string value)
+        public static void SetRelatedFrameworkElement(DependencyObject obj, FrameworkElement value)
         {
-            obj.SetValue(RelatedKeyProperty, value);
+            obj.SetValue(RelatedFrameworkElementProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for RelatedKey.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty RelatedKeyProperty =
-            DependencyProperty.RegisterAttached("RelatedKey", typeof(string), typeof(RelatedElementProperty), new PropertyMetadata(default(string), OnRelatedKeyChanged));
+        // Using a DependencyProperty as the backing store for RelatedFrameworkElement.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty RelatedFrameworkElementProperty =
+            DependencyProperty.RegisterAttached("RelatedFrameworkElement", typeof(FrameworkElement), typeof(RelatedElementProperty), new PropertyMetadata(default(FrameworkElement)));
 
-        private static void OnRelatedKeyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public static FrameworkElement GetRelatedFrameworkElement(FrameworkElement keyElement)
         {
-            if (d is UIElement relatedControl)
-            {
-                relatedKeyControlDict[relatedControl] = (string)e.NewValue;
-            }
+            return relatedControlDict.TryGetValue(keyElement, out FrameworkElement fe) ? fe : null;
         }
 
-
-
-        public static string GetRelatedValue(DependencyObject obj)
+        public static IEnumerable<FrameworkElement> GetRelatedFrameworkElementKeys(FrameworkElement valueElement)
         {
-            return (string)obj.GetValue(RelatedValueProperty);
-        }
-
-        public static void SetRelatedValue(DependencyObject obj, string value)
-        {
-            obj.SetValue(RelatedValueProperty, value);
-        }
-
-        // Using a DependencyProperty as the backing store for RelatedValue.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty RelatedValueProperty =
-            DependencyProperty.RegisterAttached("RelatedValue", typeof(string), typeof(RelatedElementProperty), new PropertyMetadata(default(string), OnRelatedValueChanged));
-
-        private static void OnRelatedValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is UIElement relatedControl)
-            {
-                relatedValueControlDict[(string)e.NewValue] = relatedControl;
-            }
-        }
-
-        public static UIElement GetRelatedUIElement(UIElement keyElement)
-        {
-            return (relatedKeyControlDict.TryGetValue(keyElement, out string key) && relatedValueControlDict.TryGetValue(key, out UIElement valueElement)) ? valueElement : null;
-        }
-
-        public static FrameworkElement GetRelatedFrameworkElement(UIElement keyElement)
-        {
-            return (relatedKeyControlDict.TryGetValue(keyElement, out string key) && relatedValueControlDict.TryGetValue(key, out UIElement valueElement) && valueElement is FrameworkElement fe) ? fe : null;
-        }
-
-        public static Control GetRelatedControl(UIElement keyElement)
-        {
-            return (relatedKeyControlDict.TryGetValue(keyElement, out string key) && relatedValueControlDict.TryGetValue(key, out UIElement valueElement) && valueElement is Control control) ? control : null;
+            return from pair in relatedControlDict
+                   where pair.Value.Equals(valueElement)
+                   select pair.Key;
         }
     }
-
-
 }

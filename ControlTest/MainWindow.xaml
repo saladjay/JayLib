@@ -37,12 +37,24 @@
         </CollectionViewSource>
     </Window.Resources>
     <MyCustomControl:DrawerHost  Background="White">
-        <Grid>
+        <Canvas>
             <MyCustomControl:EditedShapeContentControl Width="100" Height="30" Visibility="Visible">
                 <Button  Content="aaaaaaaaaaa"></Button>
             </MyCustomControl:EditedShapeContentControl>
-            <Button Width="100" Height="30" Content="aaaaaaaaaaa" HorizontalAlignment="Left"></Button>
+            <Grid Width="100" Height="100" Background="AliceBlue" Name="aaaaaaaaa" Canvas.Left="100" Canvas.Top="30">
+                <MyCustomControl:ThumbParent VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <MyCustomControl:EditedShapeThumb Height="3" x:Name="TopEdge" Cursor="SizeNS"  Background="Gray" Opacity="0.5"
+           VerticalAlignment="Top" HorizontalAlignment="Stretch" />
+                    <MyCustomControl:EditedShapeThumb Width="3" x:Name="LeftEdge" Cursor="SizeWE"  Background="Gray" Opacity="0.5"
+           VerticalAlignment="Stretch" HorizontalAlignment="Left" />
+                    <MyCustomControl:EditedShapeThumb Width="3" x:Name="RightEdge" Cursor="SizeWE"  Background="Gray" Opacity="0.5"
+           VerticalAlignment="Stretch" HorizontalAlignment="Right" />
+                    <MyCustomControl:EditedShapeThumb Height="3" x:Name="BottomEdge" Cursor="SizeNS"  Background="Gray" Opacity="0.5"
+           VerticalAlignment="Bottom"  HorizontalAlignment="Stretch" />
+                    <MyCustomControl:EditedShapeThumb Cursor="SizeAll" Background="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" EditedContentProperty="position"></MyCustomControl:EditedShapeThumb>
+                </MyCustomControl:ThumbParent>
+            </Grid>
 
-        </Grid>
+        </Canvas>
     </MyCustomControl:DrawerHost>
 </Window>

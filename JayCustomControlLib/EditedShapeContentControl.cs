@@ -51,45 +51,5 @@ namespace JayCustomControlLib
             DefaultStyleKeyProperty.OverrideMetadata(typeof(EditedShapeContentControl), new FrameworkPropertyMetadata(typeof(EditedShapeContentControl)));
         }
 
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-
-            if (this.GetTemplateChild("TopEdge") is EditedShapeThumb topEdge)
-                topEdge.RelatedControl = this;
-
-            if (this.GetTemplateChild("LeftEdge") is EditedShapeThumb leftEdge)
-                leftEdge.RelatedControl = this;
-
-            if (this.GetTemplateChild("RightEdge") is EditedShapeThumb RightEdge)
-                RightEdge.RelatedControl = this;
-
-            if (this.GetTemplateChild("BottomEdge") is EditedShapeThumb BottomEdge)
-                BottomEdge.RelatedControl = this;
-
-            if (this.GetTemplateChild("TopMidBox") is EditedShapeThumb topMidEdge)
-                topMidEdge.RelatedControl = this;
-
-            if (this.GetTemplateChild("RightMidBox") is EditedShapeThumb rightMidEdge)
-                rightMidEdge.RelatedControl = this;
-
-            if (this.GetTemplateChild("LeftMidBox") is EditedShapeThumb leftMidEdge)
-                leftMidEdge.RelatedControl = this;
-
-            if (this.GetTemplateChild("BottomMidBox") is EditedShapeThumb bottomMidEdge)
-                bottomMidEdge.RelatedControl = this;
-
-            if (this.GetTemplateChild("TopLeftCornerBox") is EditedShapeThumb topLeftCornerBox)
-                topLeftCornerBox.RelatedControl = this;
-
-            if (this.GetTemplateChild("TopRightCornerBox") is EditedShapeThumb topRightCornerBox)
-                topRightCornerBox.RelatedControl = this;
-
-            if (this.GetTemplateChild("BottomLeftCornerBox") is EditedShapeThumb bottomLeftCornerBox)
-                bottomLeftCornerBox.RelatedControl = this;
-
-            if (this.GetTemplateChild("BottomRightCornerBox") is EditedShapeThumb bottomRightCornerBox)
-                bottomRightCornerBox.RelatedControl = this;
-        }
     }
 }
