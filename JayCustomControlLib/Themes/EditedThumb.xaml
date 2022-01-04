@@ -6,14 +6,14 @@
                     xmlns:MyAttachedPropeerty="clr-namespace:JayCustomControlLib.AttachedPropertys"
                     xmlns:Converters="clr-namespace:JayCustomControlLib.Converter"
                     xmlns:local="clr-namespace:JayCustomControlLib">
-    <Style TargetType="local:EditedShapeThumb">
+    <Style TargetType="local:EditedThumb">
 
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
         <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="local:EditedShapeThumb">
+                <ControlTemplate TargetType="local:EditedThumb">
                     <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
                     </Border>
                 </ControlTemplate>

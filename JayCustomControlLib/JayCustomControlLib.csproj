@@ -60,7 +60,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\EditedShapeThumb.xaml">
+    <Page Include="Themes\EditedThumb.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -139,7 +139,7 @@
     <Compile Include="Converter\StringToVisibilityConverter.cs" />
     <Compile Include="DrawerHost.cs" />
     <Compile Include="EditedShapeContentControl.cs" />
-    <Compile Include="EditedShapeThumb.cs" />
+    <Compile Include="EditedThumb.cs" />
     <Compile Include="JColorPicker.cs" />
     <Compile Include="JLight.cs" />
     <Compile Include="JLimitGDSlider.cs" />

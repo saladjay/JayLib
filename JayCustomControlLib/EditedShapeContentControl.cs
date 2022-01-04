@@ -51,5 +51,62 @@ namespace JayCustomControlLib
             DefaultStyleKeyProperty.OverrideMetadata(typeof(EditedShapeContentControl), new FrameworkPropertyMetadata(typeof(EditedShapeContentControl)));
         }
 
+
+
+
+        public bool AutoHideEditedThumb
+        {
+            get { return (bool)GetValue(AutoHideEditedThumbProperty); }
+            set { SetValue(AutoHideEditedThumbProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for AutoHideEditedThumb.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty AutoHideEditedThumbProperty =
+            DependencyProperty.Register("AutoHideEditedThumb", typeof(bool), typeof(EditedShapeContentControl), new PropertyMetadata(true));
+
+
+
+
+        public Brush ThumbBrush
+        {
+            get { return (Brush)GetValue(ThumbBrushProperty); }
+            set { SetValue(ThumbBrushProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ThumbBrush.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ThumbBrushProperty =
+            DependencyProperty.Register("ThumbBrush", typeof(Brush), typeof(EditedShapeContentControl), new PropertyMetadata(Brushes.BlueViolet));
+
+
+
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (Parent is Canvas canvas)
+            {
+                if (e.Key == Key.Up || e.Key == Key.W)
+                {
+                    double top = Canvas.GetTop(this);
+                    Canvas.SetTop(this, top - 1);
+                }
+                else if(e.Key == Key.Left || e.Key == Key.A)
+                {
+                    double left = Canvas.GetLeft(this);
+                    Canvas.SetLeft(this, left - 1);
+                }
+                else if(e.Key == Key.Right || e.Key == Key.D)
+                {
+                    double left = Canvas.GetLeft(this);
+                    Canvas.SetLeft(this, left + 1);
+                }
+                else if(e.Key == Key.Down || e.Key == Key.S)
+                {
+                    double top = Canvas.GetTop(this);
+                    Canvas.SetTop(this, top + 1);
+                }
+            }
+
+            base.OnKeyDown(e);
+        }
     }
 }

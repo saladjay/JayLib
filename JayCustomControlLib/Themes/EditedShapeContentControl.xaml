@@ -6,7 +6,10 @@
                     xmlns:MyAttachedPropeerty="clr-namespace:JayCustomControlLib.AttachedPropertys"
                     xmlns:Converters="clr-namespace:JayCustomControlLib.Converter"
                     xmlns:local="clr-namespace:JayCustomControlLib">
-
+    <!--默认样式没有Key，设置了Key就不是默认使用了，所以需要这样写：-->
+    <!--
+     BaseOn="{StaticResource {x:Type EditedShapeContentControl}}"
+    -->
     <Style TargetType="local:EditedShapeContentControl">
         <Setter Property="Template">
             <Setter.Value>
@@ -14,36 +17,47 @@
                     <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}" Name="mainname" Background="Transparent" >
                         <ContentPresenter Content="{TemplateBinding Content}"/>
                         <local:ThumbParent x:Name="resizeThumb" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Hidden">
-                            <local:EditedShapeThumb Height="3" x:Name="TopEdge" Cursor="SizeNS"  Background="Gray" Opacity="0.5"
+                            <local:EditedThumb Height="3" x:Name="TopEdge" Cursor="SizeNS" Background="{TemplateBinding ThumbBrush}" Opacity="0.5"
            VerticalAlignment="Top" HorizontalAlignment="Stretch" />
-                            <local:EditedShapeThumb Width="3" x:Name="LeftEdge" Cursor="SizeWE"  Background="Gray" Opacity="0.5"
+                            <local:EditedThumb Width="3" x:Name="LeftEdge" Cursor="SizeWE" Background="{TemplateBinding ThumbBrush}" Opacity="0.5"
            VerticalAlignment="Stretch" HorizontalAlignment="Left" />
-                            <local:EditedShapeThumb Width="3" x:Name="RightEdge" Cursor="SizeWE"  Background="Gray" Opacity="0.5"
+                            <local:EditedThumb Width="3" x:Name="RightEdge" Cursor="SizeWE" Background="{TemplateBinding ThumbBrush}" Opacity="0.5"
            VerticalAlignment="Stretch" HorizontalAlignment="Right" />
-                            <local:EditedShapeThumb Height="3" x:Name="BottomEdge" Cursor="SizeNS"  Background="Gray" Opacity="0.5"
+                            <local:EditedThumb Height="3" x:Name="BottomEdge" Cursor="SizeNS" Background="{TemplateBinding ThumbBrush}" Opacity="0.5"
            VerticalAlignment="Bottom"  HorizontalAlignment="Stretch" />
 
-                            <local:EditedShapeThumb Width="7" Height="7" x:Name="TopMidBox" Cursor="SizeNS"  Background="Black"
+                            <local:EditedThumb Width="7" Height="7" x:Name="TopMidBox" Cursor="SizeNS" Background="{TemplateBinding ThumbBrush}"
            VerticalAlignment="Top" HorizontalAlignment="Center"/>
-                            <local:EditedShapeThumb Width="7" Height="7" x:Name="RightMidBox" Cursor="SizeWE"  Background="Black"
+                            <local:EditedThumb Width="7" Height="7" x:Name="RightMidBox" Cursor="SizeWE" Background="{TemplateBinding ThumbBrush}"
            VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                            <local:EditedShapeThumb Width="7" Height="7" x:Name="BottomMidBox" Cursor="SizeNS"  Background="Black"
+                            <local:EditedThumb Width="7" Height="7" x:Name="BottomMidBox" Cursor="SizeNS" Background="{TemplateBinding ThumbBrush}"
            VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-                            <local:EditedShapeThumb Width="7" Height="7" x:Name="LeftMidBox" Cursor="SizeWE" Background="Black"
+                            <local:EditedThumb Width="7" Height="7" x:Name="LeftMidBox" Cursor="SizeWE" Background="{TemplateBinding ThumbBrush}"
            VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
-                            <local:EditedShapeThumb Width="7" Height="7" x:Name="TopLeftCornerBox" Cursor="SizeNWSE"  Background="Black"
+                            <local:EditedThumb Width="7" Height="7" x:Name="TopLeftCornerBox" Cursor="SizeNWSE" Background="{TemplateBinding ThumbBrush}"
            VerticalAlignment="Top" HorizontalAlignment="Left"/>
-                            <local:EditedShapeThumb Width="7" Height="7" x:Name="TopRightCornerBox" Cursor="SizeNESW"  Background="Black"
+                            <local:EditedThumb Width="7" Height="7" x:Name="TopRightCornerBox" Cursor="SizeNESW" Background="{TemplateBinding ThumbBrush}"
            VerticalAlignment="Top" HorizontalAlignment="Right"/>
-                            <local:EditedShapeThumb Width="7" Height="7" x:Name="BottomLeftCornerBox" Cursor="SizeNESW"  Background="Black"
+                            <local:EditedThumb Width="7" Height="7" x:Name="BottomLeftCornerBox" Cursor="SizeNESW" Background="{TemplateBinding ThumbBrush}"
            VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
-                            <local:EditedShapeThumb Width="7" Height="7" x:Name="BottomRightCornerBox" Cursor="SizeNWSE"  Background="Black"
+                            <local:EditedThumb Width="7" Height="7" x:Name="BottomRightCornerBox" Cursor="SizeNWSE" Background="{TemplateBinding ThumbBrush}"
            VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                            <local:EditedThumb Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" x:Name="MovingBox" Cursor="Hand"
+                                               Background="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" EditedType="position"/>
                         </local:ThumbParent>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"></Condition>
+                                <Condition Property="AutoHideEditedThumb" Value="True"></Condition>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="resizeThumb" Value="Visible"></Setter>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <Trigger Property="AutoHideEditedThumb" Value="False">
                             <Setter Property="Visibility" TargetName="resizeThumb" Value="Visible"></Setter>
                         </Trigger>
                     </ControlTemplate.Triggers>
